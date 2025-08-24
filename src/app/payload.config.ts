@@ -6,6 +6,7 @@ import { tr } from "@payloadcms/translations/languages/tr";
 import { en } from "@payloadcms/translations/languages/en";
 import { de } from "@payloadcms/translations/languages/de";
 import { Posts } from "./collections/posts";
+import { Categories } from "./collections/Categories";
 export default buildConfig({
   // If you'd like to use Rich Text, pass your editor here
   editor: lexicalEditor(),
@@ -16,7 +17,8 @@ export default buildConfig({
 
   // Define and configure your collections in this array
   collections: [
-    Posts 
+    Posts,
+    Categories
   ],
 
   // Your Payload secret - should be a complex and secure string, unguessable

@@ -1,11 +1,14 @@
+import configPromise from "@payload-config";
+import { getPayload } from "payload";
+
+const Home = async () => {
 
 
-const Home = () => {
-    return (
-        <div>
-            Home
-        </div>
-    )
-}
+  return (
+    <div>
+      Home
+    </div>
+  );
+};
 
 export default Home;

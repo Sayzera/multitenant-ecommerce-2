@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
 
-type Props = {}
+type Props = {};
 
 function Footer({}: Props) {
   return (
-    <div>Footer</div>
-  )
+    <div className="border-t-1 border-black p-5 bg-white">
+      <div>Load, Inc.</div>
+    </div>
+  );
 }
 
-export default Footer
+export default Footer;
