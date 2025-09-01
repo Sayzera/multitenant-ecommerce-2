@@ -137,7 +137,7 @@ export interface Category {
   id: string;
   name: string;
   slug: string;
-  color: string;
+  color?: string | null;
   parent?: (string | null) | Category;
   subcategories?: {
     docs?: (string | Category)[];

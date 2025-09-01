@@ -1,9 +1,10 @@
 import React from "react";
 import { Category } from "../../../../payload-types";
 import Link from "next/link";
+import { CategoriesGetManyOutput } from "@/modules/categories/types";
 
 interface SubcategoryMenuProps {
-  category: Category;
+  category: CategoriesGetManyOutput[1];
   isOpen: boolean;
   position: {
     top: number;
@@ -21,36 +22,38 @@ function SubcategoryMenu({ category, isOpen, position }: SubcategoryMenuProps) {
     return null;
   }
 
-  const backgroundColor = category.color || '#F5F5F5'
+  const backgroundColor = category.color || "#F5F5F5";
 
-  return <div className="fixed z-100" style={{
-    top: position.top,
-    left: position.left
-  }}>
-
-    {/* Invisible bridge to maintain hover */}
-    <div className="h-3 w-60"/>  
-    <div className="w-60 text-black rounded-md overflow-hidden border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-     style={{
-        backgroundColor
-     }}
+  return (
+    <div
+      className="fixed z-100"
+      style={{
+        top: position.top,
+        left: position.left,
+      }}
     >
+      {/* Invisible bridge to maintain hover */}
+      <div className="h-3 w-60" />
+      <div
+        className="w-60 text-black rounded-md overflow-hidden border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+        style={{
+          backgroundColor,
+        }}
+      >
         <div>
-            {
-                category.subcategories?.map((subcategory:Category) => (
-                    <Link key={subcategory.slug} href={subcategory.slug}
-                     className="w-full text-left p-4 hover:bg-black hover:text-white flex justify-between items-center underline font-medium"
-                    >
-                        {
-                            subcategory.name
-                        }
-                    </Link>
-                ))
-            }
+          {category.subcategories?.map((subcategory: Category) => (
+            <Link
+              key={subcategory.slug}
+              href={`/${category.slug}/${subcategory.slug}`}
+              className="w-full text-left p-4 hover:bg-black hover:text-white flex justify-between items-center underline font-medium"
+            >
+              {subcategory.name}
+            </Link>
+          ))}
         </div>
-        
+      </div>
     </div>
-  </div>;
+  );
 }
 
 export default SubcategoryMenu;

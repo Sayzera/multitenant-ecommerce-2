@@ -28,7 +28,6 @@ export const Categories: CollectionConfig = {
         {
             name:'color',
             type: 'text',
-            required: true,
             admin: {
                 components: {
                     Field: {
