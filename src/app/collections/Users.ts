@@ -3,7 +3,7 @@ import type { CollectionConfig } from "payload";
 export const Users: CollectionConfig = {
     slug: 'users',
     admin: {
-        useAsTitle: 'email',
+        useAsTitle: 'username',
     },
     auth: true,
     fields: [
@@ -13,6 +13,13 @@ export const Users: CollectionConfig = {
             unique: true,
             type: 'text',
         },
+        {
+            name: 'email',
+            required: true,
+            unique:true,
+            type: 'email'
+
+        }
         
     ]
 }

@@ -15,6 +15,7 @@ export default buildConfig({
   i18n: {
     supportedLanguages: { tr, de, en },
   },
+  cookiePrefix: 'funroad',
 
   // Define and configure your collections in this array
   collections: [
