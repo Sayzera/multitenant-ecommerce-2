@@ -1,10 +1,13 @@
 'use client';
 import { Input } from "@/components/ui/input";
-import { ListFilterIcon, SearchIcon } from "lucide-react";
+import { BookmarkCheck, BookmarkCheckIcon, ListFilterIcon, SearchIcon } from "lucide-react";
 import { CategoriesSidebar } from "./categories-sidebar";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 
 interface Props {
   disabled?: boolean;
@@ -12,6 +15,11 @@ interface Props {
 }
 export const SearchInput = ({ disabled,data }: Props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+
+  const trpc = useTRPC()
+  const session = useQuery(trpc.auth.session.queryOptions())
+
+  console.log(session, 'session')
   return (
     <div className="flex items-center gap-2 w-full">
       <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} />
@@ -32,10 +40,20 @@ export const SearchInput = ({ disabled,data }: Props) => {
        onClick={() => {
         setIsSidebarOpen(true)
        }}
+       asChild
       >
         <ListFilterIcon />
 
       </Button>
+      {
+        session.data?.user && !session.isLoading && (
+          <Button variant={'elevated'} asChild>
+            <Link href={'/library'} prefetch >
+            <BookmarkCheckIcon /> Kütüphane
+            </Link>
+          </Button>
+        )
+      }
       {/* TODO: Add categories view all button */}
       {/* TODO: Add library button */}
     </div>

@@ -1,5 +1,5 @@
-import Footer from "./footer";
-import Navbar from "./navbar";
+import Navbar from "@/modules/home/ui/components/navbar";
+import Footer from "@/modules/home/ui/components/footer";
 import { SearchFilters, SearchFiltersSkeleton } from "./search-filters";
 import ConfigPromise from "@payload-config";
 import { getPayload } from "payload";
