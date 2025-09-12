@@ -16,9 +16,14 @@ export const ProductList = ({
 
 
     return (
-        <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
             {
-                JSON.stringify(data, null, 2)
+                data?.docs.map((product) => (
+                    <div key={product.id} className="border rounded-md bg-white">
+                        <h2 className="">{product.name}</h2>  
+                        <p>${product.price}</p>
+                    </div>
+                ))
             }
         </div>
     )
