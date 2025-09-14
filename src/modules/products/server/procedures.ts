@@ -1,7 +1,9 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import z from "zod";
-import type { Where } from "payload";
+import type { Sort, Where } from "payload";
 import { Category } from "../../../../payload-types";
+import { normalizeForDB } from "@/utils/currency";
+import { sortValues } from "../hooks/use-product-filters";
 
 export const productsRouter = createTRPCRouter({
   getMany: baseProcedure
@@ -10,23 +12,47 @@ export const productsRouter = createTRPCRouter({
         category: z.string().nullable().optional(),
         minPrice: z.string().nullable().optional(),
         maxPrice: z.string().nullable().optional(),
+        tags: z.array(z.string()).nullable().optional(),
+        sort: z.enum(sortValues).nullable().optional(),
       })
     )
     .query(async ({ ctx, input }) => {
       const where: Where = {};
+      let sort: Sort = "-createdAt";
+      const minPrice = input.minPrice ? normalizeForDB(input.minPrice) : "";
+      const maxPrice = input.maxPrice ? normalizeForDB(input.maxPrice) : "";
+      const tags = input.tags;
 
-      if (input.minPrice && input.maxPrice) {
+      if (input.sort === "curated") {
+        sort = "-createdAt";
+      }
+
+      if (input.sort === "hot_and_new") {
+        sort = "+createdAt";
+      }
+
+      if (input.sort === "trending") {
+        sort = "-createdAt";
+      }
+
+      if (minPrice && maxPrice) {
         where.price = {
-          less_than_equal: input.maxPrice,
-          greater_than_equal: input.minPrice,
+          less_than_equal: maxPrice,
+          greater_than_equal: minPrice,
         };
-      } else if (input.minPrice) {
+      } else if (minPrice) {
         where.price = {
-          greater_than_equal: input.minPrice,
+          greater_than_equal: minPrice,
         };
-      } else if (input.maxPrice) {
+      } else if (maxPrice) {
         where.price = {
-          less_than_equal: input.maxPrice,
+          less_than_equal: maxPrice,
+        };
+      }
+
+      if (tags && tags.length > 0) {
+        where["tags.name"] = {
+          in: tags,
         };
       }
 
@@ -68,7 +94,7 @@ export const productsRouter = createTRPCRouter({
       const data = await ctx.db.find({
         collection: "products",
         depth: 1, // Populate "category" & "image" & "RefundPolicy"
-        sort: "name",
+        sort,
         where,
       });
 

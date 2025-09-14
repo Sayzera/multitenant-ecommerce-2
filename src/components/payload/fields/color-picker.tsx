@@ -9,7 +9,6 @@ import { toTitleCase } from "@/utils/toTitleCase";
 export const ColorPicker: React.FC<UIFieldClientProps> = ({ field, path }) => {
   const { value, setValue } = useField<string>({ path: path || field.name });
 
-  console.log(field, "field");
 
   return (
     <div>

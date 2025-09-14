@@ -11,6 +11,7 @@ import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { RefundPolicy } from "./collections/RefundPolicy";
 import { Products } from "./collections/Products";
+import { Tags } from "./collections/Tags";
 export default buildConfig({
   // If you'd like to use Rich Text, pass your editor here
   editor: lexicalEditor(),
@@ -27,7 +28,8 @@ export default buildConfig({
     Users,
     Media,
     RefundPolicy,
-    Products
+    Products,
+    Tags
   ],
 
   // Your Payload secret - should be a complex and secure string, unguessable

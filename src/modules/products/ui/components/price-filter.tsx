@@ -1,35 +1,16 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ChangeEvent } from "react";
+import { formatAsCurrency } from "@/utils/currency";
+import { ChangeEvent, useRef } from "react";
 
 interface Props {
   minPrice?: string | null;
   maxPrice?: string | null;
-  onMinPriceChange: (value: string) => void;
+  onMinPriceChange: (value: string) => void; // "1256,10" gibi string döner
   onMaxPriceChange: (value: string) => void;
 }
 
-export const formatAsCurreny = (value: string) => {
-  const numbericValue = value.replace(/[^0-9.]/, ""); // bunun dışındaki herşeyi sil
 
-  const parts = numbericValue.split(".");
-
-  const formattedValue =
-    parts[0] + (parts?.length > 1 ? "." + parts[1]?.slice(0, 2) : "");
-
-  if (!formattedValue) return "";
-
-  const numberValue = parseFloat(formattedValue);
-
-  if (isNaN(numberValue)) return "";
-
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0, // en az kaç ondalık basamak olacağı
-    maximumFractionDigits: 2, // en fazla kaç ondalık basamak olacağı
-  }).format(numberValue);
-};
 
 export const PriceFilter = ({
   minPrice,
@@ -37,32 +18,39 @@ export const PriceFilter = ({
   onMinPriceChange,
   onMaxPriceChange,
 }: Props) => {
-  const handleMinPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const numericValue = e.target.value.replace(/[^0-9.]/, "");
-    onMinPriceChange(numericValue);
-  };
-  const handleMaxPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const numericValue = e.target.value.replace(/[^0-9.]/, "");
-    onMaxPriceChange(numericValue);
-  };
+  const minRef = useRef<HTMLInputElement>(null);
+  const maxRef = useRef<HTMLInputElement>(null);
+
+  const handleChange =
+    (setter: (v: string) => void) =>
+    (e: ChangeEvent<HTMLInputElement>) => {
+      // Sadece rakam ve virgül kalsın
+      const val = e.target.value.replace(/[^0-9,]/g, "");
+      setter(val);
+    };
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-2">
         <Label className="font-medium text-base">Minimum Price</Label>
         <Input
+          ref={minRef}
           type="text"
-          placeholder="$0"
-          value={minPrice ? formatAsCurreny(minPrice) : ""}
-          onChange={handleMinPriceChange}
+          inputMode="decimal"
+          placeholder="0"
+          value={formatAsCurrency(minPrice ?? "")}
+          onChange={handleChange(onMinPriceChange)}
         />
       </div>
       <div className="flex flex-col gap-2">
         <Label className="font-medium text-base">Maksimum Price</Label>
         <Input
+          ref={maxRef}
           type="text"
+          inputMode="decimal"
           placeholder="∞"
-          value={maxPrice ? formatAsCurreny(maxPrice) : ""}
-          onChange={handleMaxPriceChange}
+          value={formatAsCurrency(maxPrice ?? "")}
+          onChange={handleChange(onMaxPriceChange)}
         />
       </div>
     </div>
