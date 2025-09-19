@@ -68,7 +68,7 @@ export const ProductFilters = () => {
       <div className="p-4 border-b flex items-center justify-between">
         <p className="font-medium">Filters</p>
         {hasAnyFilters && (
-          <button className="underline" onClick={onClear}>
+          <button className="underline cursor-pointer" onClick={onClear}>
             Clear
           </button>
         )}
