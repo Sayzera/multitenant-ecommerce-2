@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Category } from "../../../../payload-types";
 import { cn } from "@/lib/utils";
 import { useRef, useState } from "react";
 import { useDropdownPosition } from "./use-dropdown-position";
@@ -33,7 +32,6 @@ export const CategoryDropdown = ({
 
 
   const onMouseLeave = () => setIsOpen(false);
-  const dropdownPosition = getDropdownPosition();
 
 
   return (
@@ -71,7 +69,6 @@ export const CategoryDropdown = ({
         <SubcategoryMenu
           category={category}
           isOpen={isOpen}
-          position={dropdownPosition}
         />
     </div>
   );
