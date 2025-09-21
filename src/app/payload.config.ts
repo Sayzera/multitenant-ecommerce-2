@@ -1,3 +1,5 @@
+import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
+
 import sharp from "sharp";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
@@ -13,9 +15,12 @@ import { RefundPolicy } from "./collections/RefundPolicy";
 import { Products } from "./collections/Products";
 import { Tags } from "./collections/Tags";
 import { Tenants } from "./collections/Tenants";
+
 export default buildConfig({
   // If you'd like to use Rich Text, pass your editor here
   editor: lexicalEditor(),
+
+
 
   i18n: {
     supportedLanguages: { tr, de, en },
@@ -46,4 +51,15 @@ export default buildConfig({
   // This is optional - if you don't need to do these things,
   // you don't need it!
   sharp,
+  plugins:[
+    multiTenantPlugin({
+      collections: {
+        products: {},
+      },
+      tenantsArrayField: {
+        includeDefaultField:false
+      },
+      userHasAccessToAllTenants: (user) => Boolean(user?.roles?.includes('super-admin'))
+    })
+  ]
 });

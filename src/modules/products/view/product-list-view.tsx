@@ -1,3 +1,4 @@
+'use client'
 import { ProductFilters } from "../ui/components/product-filters";
 import { ProductSort } from "../ui/components/product-sort";
 import { Suspense } from "react";
