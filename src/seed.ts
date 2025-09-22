@@ -141,13 +141,29 @@ export const categories = [
 const seed = async () => {
     const payload = await getPayload({config})
 
+
+    const adminTenant = await payload.create({
+      collection: 'tenants',
+      data: {
+        name: 'admin',
+        slug: 'admin',
+        stripeAccountId: 'admin',
+        email: 'admin@demo.com',
+        password: '123456',
+        stripeDetailsSubmitted: true
+      }
+    })
+
     await payload.create({
       collection: 'users',
       data: {
         email: 'admin@demo.com',
         password: '123456',
         roles: ['super-admin'],
-        username: 'admin'
+        username: 'admin',
+        tenants: [{
+          tenant: String(adminTenant.id)
+        }]
       }
     })
 

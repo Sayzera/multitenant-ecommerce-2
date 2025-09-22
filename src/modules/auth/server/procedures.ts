@@ -78,7 +78,7 @@ export const authRouter = createTRPCRouter({
         data: {
           tenants: [
             {
-              tenant: tenant.id
+              tenant:String(tenant.id)
             }
           ],
           email: input.email,

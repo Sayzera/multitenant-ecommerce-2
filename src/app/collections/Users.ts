@@ -15,14 +15,25 @@ const defaultTenantArrayField = tenantsArrayField({
     create: () => true,
     update: () => true,
   },
+
+  rowFields: [
+    {
+      name: "id",
+      type: "text",
+    },
+  ],
 });
+
+
 
 export const Users: CollectionConfig = {
   slug: "users",
   admin: {
     useAsTitle: "username",
   },
+
   auth: true,
+
   fields: [
     {
       name: "username",
@@ -47,6 +58,7 @@ export const Users: CollectionConfig = {
         description: "Roles of the user",
       },
     },
+    
  
     {
         ...defaultTenantArrayField,
